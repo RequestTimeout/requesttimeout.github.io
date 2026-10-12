@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Documentation For The Colors API Made By BananaOfficial.">
+
+  <title>Color Interpolation API</title>
+  <link rel="icon" href="/assets/images/icon%2032x32.svg" sizes="32x32">
+  <link rel="icon" href="/assets/images/icon%20512x512.svg" sizes="512x512">
+  <link rel="apple-touch-icon" href="/assets/images/icon%20512x512.svg">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #0b0d10;
+      color: #e6e8eb;
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    code,
+    pre {
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid #1d2128;
+      background: rgba(11, 13, 16, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: #8b949e;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      color: #8b949e;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .hero {
+      padding: 100px 0 80px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid #292e36;
+      border-radius: 999px;
+      color: #9da5af;
+      font-size: 13px;
+      background: #101318;
+      margin-bottom: 24px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #5ee28a;
+      box-shadow: 0 0 10px rgba(94, 226, 138, 0.5);
+    }
+
+    h1 {
+      margin: 0 auto;
+      max-width: 800px;
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      color: #fff;
+    }
+
+    .hero-description {
+      max-width: 680px;
+      margin: 26px auto 0;
+      color: #9199a4;
+      font-size: 19px;
+    }
+
+    .endpoint {
+      margin: 35px auto 0;
+      width: fit-content;
+      max-width: 100%;
+      background: #11151a;
+      border: 1px solid #292e36;
+      border-radius: 9px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      color: #d8dee5;
+      text-align: left;
+    }
+
+    .method {
+      color: #5ee28a;
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .path {
+      color: #8fc7ff;
+    }
+
+    section {
+      padding: 70px 0;
+      border-top: 1px solid #1b1f25;
+    }
+
+    .section-title {
+      font-size: 30px;
+      letter-spacing: -0.035em;
+      color: #fff;
+      margin: 0 0 12px;
+    }
+
+    .section-description {
+      color: #8e969f;
+      max-width: 720px;
+      margin: 0 0 30px;
+    }
+
+    .card {
+      background: #101318;
+      border: 1px solid #252a32;
+      border-radius: 12px;
+      padding: 25px;
+      margin-top: 20px;
+    }
+
+    .card h3 {
+      color: #fff;
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .card p {
+      color: #929aa4;
+      margin-bottom: 0;
+    }
+
+    .gradient {
+      height: 120px;
+      border-radius: 10px;
+      margin-bottom: 22px;
+      background:
+        linear-gradient(
+          90deg,
+          #123456,
+          #acdfd1,
+          #345678
+        );
+      border: 1px solid #30353d;
+    }
+
+    .gradient-labels {
+      display: flex;
+      justify-content: space-between;
+      color: #7e8792;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .code-block {
+      background: #07090c;
+      border: 1px solid #252a32;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .code-header {
+      padding: 10px 15px;
+      border-bottom: 1px solid #252a32;
+      color: #717a85;
+      font-size: 12px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 20px;
+      overflow-x: auto;
+      color: #d6dbe1;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .comment {
+      color: #68727e;
+    }
+
+    .string {
+      color: #a8d5a2;
+    }
+
+    .key {
+      color: #8fc7ff;
+    }
+
+    .number {
+      color: #d7b9ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .parameter {
+      display: flex;
+      gap: 18px;
+      padding: 20px 0;
+      border-bottom: 1px solid #20252c;
+    }
+
+    .parameter:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .parameter:first-child {
+      padding-top: 0;
+    }
+
+    .parameter code {
+      min-width: 90px;
+      color: #fff;
+    }
+
+    .required {
+      color: #ff8d8d;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+
+    .optional {
+      color: #7e8792;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+
+    .parameter p {
+      margin: 0;
+      color: #8d96a1;
+    }
+
+    .example-url {
+      background: #07090c;
+      border: 1px solid #252a32;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      color: #9ac9ff;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .use-case {
+      min-height: 190px;
+    }
+
+    .use-case-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: #181c22;
+      border: 1px solid #292f37;
+      color: #cbd1d8;
+      margin-bottom: 17px;
+      font-size: 18px;
+    }
+
+    .response-preview {
+      background: #07090c;
+      border: 1px solid #252a32;
+      border-radius: 10px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .response-preview pre {
+      padding: 0;
+    }
+
+    .note {
+      padding: 16px 18px;
+      border-left: 3px solid #6f7cff;
+      background: #11141a;
+      color: #929aa5;
+      border-radius: 0 8px 8px 0;
+      margin-top: 25px;
+    }
+
+    .note strong {
+      color: #fff;
+    }
+
+    footer {
+      border-top: 1px solid #1b1f25;
+      padding: 35px 0;
+      color: #6f7883;
+      font-size: 14px;
+    }
+
+    @media (max-width: 750px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 70px 0 60px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 55px 0;
+      }
+
+      .parameter {
+        display: block;
+      }
+
+      .parameter code {
+        display: block;
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="brand">
+      Color API <span>/ docs</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#usage">Usage</a>
+      <a href="#parameters">Parameters</a>
+      <a href="#response">Response</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="border-top: 0;">
+    <div class="container">
+
+      <div class="eyebrow">
+        <span class="dot"></span>
+        GET /api/colors/
+      </div>
+
+      <h1>
+        Generate color paths<br>
+        from simple URLs.
+      </h1>
+
+      <p class="hero-description">
+        Give the API two or more colors and it generates a complete
+        interpolated color sequence between them. Add as many anchor
+        colors as you want and control the number of generated colors.
+      </p>
+
+      <div class="endpoint">
+        <span class="method">GET</span>
+        <span class="path">
+          /api/colors/?colors=123456,acdfd1,345678&steps=101
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="overview">
+    <div class="container">
+
+      <h2 class="section-title">How it works</h2>
+
+      <p class="section-description">
+        The API treats every color you provide as an anchor. It then
+        interpolates between each pair of anchors to create a continuous
+        path through all of them.
+      </p>
+
+      <div class="card">
+
+        <div class="gradient"></div>
+
+        <div class="gradient-labels">
+          <span>#123456</span>
+          <span>#ACDFD1</span>
+          <span>#345678</span>
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Multiple anchors</h3>
+
+        <p>
+          You're not limited to two colors. For example, you can go from
+          red to yellow, then green, cyan, and finally blue.
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">Request</div>
+
+          <pre>/api/colors/?colors=ff0000,ffff00,00ff00,00ffff,0000ff&steps=500</pre>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="usage">
+    <div class="container">
+
+      <h2 class="section-title">Basic usage</h2>
+
+      <p class="section-description">
+        Make a normal HTTP GET request. No authentication, SDK, or
+        special client is required.
+      </p>
+
+      <div class="code-block">
+        <div class="code-header">JavaScript</div>
+
+        <pre><span class="key">const</span> response =
+  <span class="key">await</span> fetch(
+    <span class="string">"https://cdn.bananaofficial.workers.dev/api/colors/?colors=123456,acdfd1,345678"</span>
+  );
+
+<span class="key">const</span> data = <span class="key">await</span> response.json();
+
+console.log(data.colors);</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">curl</div>
+
+        <pre>curl "https://cdn.bananaofficial.workers.dev/api/colors/?colors=123456,acdfd1,345678"</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">Python</div>
+
+        <pre><span class="key">import</span> requests
+
+response = requests.get(
+    <span class="string">"https://cdn.bananaofficial.workers.dev/api/colors/"</span>,
+    params={
+        <span class="string">"colors"</span>: <span class="string">"123456,acdfd1,345678"</span>,
+        <span class="string">"steps"</span>: <span class="number">500</span>
+    }
+)
+
+data = response.json()</pre>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="parameters">
+    <div class="container">
+
+      <h2 class="section-title">Parameters</h2>
+
+      <p class="section-description">
+        The endpoint has two query parameters.
+      </p>
+
+      <div class="card">
+
+        <div class="parameter">
+          <code>
+            colors
+            <span class="required">required</span>
+          </code>
+
+          <p>
+            A comma-separated list of HEX colors. You can provide two
+            or more colors. Both six-digit and three-digit HEX values
+            are supported.
+          </p>
+        </div>
+
+        <div class="parameter">
+          <code>
+            steps
+            <span class="optional">optional</span>
+          </code>
+
+          <p>
+            The total number of colors to generate. Defaults to
+            <code>101</code>. The current maximum is <code>100000</code>.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Examples</h3>
+
+        <div class="example-url">
+          /api/colors/?colors=ff0000,0000ff
+        </div>
+
+        <div class="example-url">
+          /api/colors/?colors=ff0000,ffff00,00ff00&steps=500
+        </div>
+
+        <div class="example-url">
+          /api/colors/?colors=123456,abc,345678&steps=1000
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="response">
+    <div class="container">
+
+      <h2 class="section-title">Response</h2>
+
+      <p class="section-description">
+        The API returns JSON containing the normalized input colors,
+        the number of generated colors, and every generated color
+        with its position, HEX value, and RGB values.
+      </p>
+
+      <div class="response-preview">
+        <pre>{
+  <span class="key">"input"</span>: [
+    <span class="string">"#123456"</span>,
+    <span class="string">"#ACDFD1"</span>,
+    <span class="string">"#345678"</span>
+  ],
+
+  <span class="key">"colors"</span>: [
+    {
+      <span class="key">"position"</span>: <span class="number">0</span>,
+      <span class="key">"hex"</span>: <span class="string">"#123456"</span>,
+      <span class="key">"rgb"</span>: [<span class="number">18</span>, <span class="number">52</span>, <span class="number">86</span>]
+    },
+    {
+      <span class="key">"position"</span>: <span class="number">1</span>,
+      <span class="key">"hex"</span>: <span class="string">"#789ABC"</span>,
+      <span class="key">"rgb"</span>: [<span class="number">120</span>, <span class="number">154</span>, <span class="number">188</span>]
+    },
+
+    <span class="comment">// ... generated colors ...</span>
+
+    {
+      <span class="key">"position"</span>: <span class="number">4</span>,
+      <span class="key">"hex"</span>: <span class="string">"#345678"</span>,
+      <span class="key">"rgb"</span>: [<span class="number">52</span>, <span class="number">86</span>, <span class="number">120</span>]
+    }
+  ]
+}</pre>
+      </div>
+
+      <div class="note">
+        <strong>Anchor colors are preserved.</strong>
+        The generated path always starts with your first color and
+        ends with your last color while passing through the supplied
+        intermediate anchor colors.
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <h2 class="section-title">What can you use it for?</h2>
+
+      <p class="section-description">
+        The API is intentionally simple, which makes it useful as a
+        building block for other projects.
+      </p>
+
+      <div class="grid">
+
+        <div class="card use-case">
+          <div class="use-case-icon">⌁</div>
+
+          <h3>Gradients</h3>
+
+          <p>
+            Generate the individual colors needed for CSS gradients,
+            visualizations, canvas rendering, or custom gradient editors.
+          </p>
+        </div>
+
+        <div class="card use-case">
+          <div class="use-case-icon">▦</div>
+
+          <h3>Data visualization</h3>
+
+          <p>
+            Create color scales for charts, maps, heatmaps, dashboards,
+            and other data-driven interfaces.
+          </p>
+        </div>
+
+        <div class="card use-case">
+          <div class="use-case-icon">✦</div>
+
+          <h3>Generative design</h3>
+
+          <p>
+            Use the generated sequence as a palette for animations,
+            procedural artwork, backgrounds, and visual effects.
+          </p>
+        </div>
+
+        <div class="card use-case">
+          <div class="use-case-icon">#</div>
+
+          <h3>Developer tools</h3>
+
+          <p>
+            Build palette generators, color utilities, design tools,
+            or APIs that need predictable color interpolation.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <h2 class="section-title">Quick reference</h2>
+
+      <div class="card">
+
+        <div class="parameter">
+          <code>GET</code>
+          <p>/api/colors/</p>
+        </div>
+
+        <div class="parameter">
+          <code>colors</code>
+          <p>Comma-separated HEX anchor colors.</p>
+        </div>
+
+        <div class="parameter">
+          <code>steps</code>
+          <p>Total number of generated colors. Default: 101.</p>
+        </div>
+
+        <div class="parameter">
+          <code>Response</code>
+          <p>JSON.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+
+<footer>
+  <div class="container">
+    Color Interpolation API · Simple HTTP color utilities
+  </div>
+</footer>
+<!-- Cloudflare Web Analytics -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ec381b60ea67463e8e59c9819cb0dfc6"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
